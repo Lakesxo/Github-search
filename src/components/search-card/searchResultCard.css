@@ -1,0 +1,71 @@
+.resultCard {
+  border-radius: 10px;
+  border: 1px solid rgba(227, 227, 227, 0.25);
+  background: rgba(24, 24, 27, 0.32);
+  width: calc(25% - 30px);
+  padding: 20px;
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    img {
+      width: 90px;
+      height: 90px;
+      border-radius: 100%;
+    }
+  }
+  p.name {
+    color: #fff;
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  .attributeWrapper {
+    display: flex;
+    color: #b0b0b0;
+    font-size: 14px;
+    gap: 8px;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 2350px) {
+  .resultCard {
+    width: calc(16.66% - 33.5px);
+  }
+}
+
+@media (min-width: 1890px) and (max-width: 2349px) {
+  .resultCard {
+    width: calc(20% - 32px);
+  }
+}
+
+@media screen and (min-width: 1900px) and (max-width: 1889px) {
+  .resultCard {
+    width: calc(25% - 30px);
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .resultCard {
+    width: calc(33.33% - 27px);
+  }
+}
+
+@media screen and (max-width: 1075px) {
+  .resultCard {
+    width: calc(50% - 20px);
+  }
+}
+
+@media screen and (max-width: 831px) {
+  .resultCard {
+    width: calc(50% - 13px);
+  }
+}
+
+@media (max-width: 700px) {
+  .resultCard {
+    width: 100%;
+  }
+}

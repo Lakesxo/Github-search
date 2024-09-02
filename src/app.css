@@ -1,0 +1,255 @@
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+header {
+  padding: 35px 50px;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+h2 {
+  color: #eeeeee;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: 20px;
+  span.gradient {
+    background: linear-gradient(90deg, #613bff 0%, #ab9e9e 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+p.select {
+  color: #d9d9d9;
+  text-align: center;
+  margin-top: 34px;
+}
+
+.radiogroup {
+  display: flex;
+  justify-content: center;
+  color: #d9d9d9;
+  margin-top: 15px;
+}
+
+.ant-radio-group {
+  display: flex;
+  gap: 100px;
+  .ant-radio-wrapper {
+    color: #d9d9d9;
+    .ant-radio-checked .ant-radio-inner {
+      background-color: transparent;
+      border-color: rgba(227, 227, 227, 0.25);
+    }
+    .ant-radio .ant-radio-inner {
+      background-color: transparent;
+      border-color: rgba(227, 227, 227, 0.25);
+    }
+    .ant-radio-checked .ant-radio-inner::after {
+      background-color: #6f22ec;
+    }
+  }
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 45px;
+  .inputgroup {
+    position: relative;
+    width: 65%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid rgba(227, 227, 227, 0.25);
+    box-shadow: 0px 0px 24.6px 4px rgba(97, 59, 255, 0.2);
+    input {
+      background: #090b0e;
+      border: 0;
+      outline: 0;
+      color: #d9d9d9;
+      padding: 5px 0px 5px 30px;
+      width: 75%;
+    }
+    span.searchIcon {
+      position: absolute;
+      top: 18px;
+      left: 10px;
+    }
+  }
+}
+
+.pagination {
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid rgba(227, 227, 227, 0.25);
+  background: #090b0e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 50px;
+  margin-top: 40px;
+}
+
+.recordLimit,
+.navigation,
+.page {
+  display: flex;
+  align-items: center;
+  color: #d9d9d9;
+  gap: 8px;
+  width: 33.3%;
+}
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+}
+
+select {
+  background: transparent;
+  border: 1px solid rgba(227, 227, 227, 0.25);
+  padding: 5px;
+  border-radius: 5px;
+  color: #d9d9d9;
+  outline: 0;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 30px 50px;
+}
+
+.noResult {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  img {
+    height: 550px;
+  }
+  .overlay {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 250px;
+    p {
+      color: #fff;
+    }
+  }
+}
+
+.ant-skeleton {
+  padding: 50px;
+  .ant-skeleton-content {
+    .ant-skeleton-element,
+    .ant-skeleton-title,
+    .ant-skeleton-paragraph > li {
+      background-color: #29292a;
+    }
+  }
+}
+
+/* Media Queries  */
+
+@media (min-width: 831px) and (max-width: 1185px) {
+  .inputContainer {
+    .inputgroup {
+      width: 93%;
+    }
+  }
+}
+
+@media (max-width: 831px) {
+  .inputContainer {
+    margin-top: 60px;
+    padding: 0px 20px;
+    .inputgroup {
+      width: 100%;
+      box-shadow: none;
+      margin-bottom: 30px;
+      span.searchIcon {
+        top: 10px;
+      }
+      input {
+        width: 100%;
+      }
+      button {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        border: 1px solid #613bff;
+      }
+    }
+  }
+  .results {
+    gap: 25px;
+    padding: 20px 20px 60px 20px;
+  }
+  .pagination {
+    padding: 20px;
+    gap: 30px;
+    flex-direction: column;
+  }
+  .recordLimit,
+  .navigation {
+    width: 100%;
+  }
+  .page {
+    position: absolute;
+    left: 20px;
+    top: 92px;
+    justify-content: flex-start;
+  }
+  .ant-skeleton {
+    margin-top: 40px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  header {
+    padding: 30px 20px;
+  }
+  h2 {
+    font-size: 24px;
+    margin-top: 30px;
+  }
+  .ant-radio-group {
+    gap: 50px;
+  }
+  .noResult {
+    img {
+      height: 350px;
+    }
+    .overlay {
+      top: 150px;
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  .pagination {
+    font-size: 13px;
+  }
+}
