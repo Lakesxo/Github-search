@@ -62,7 +62,7 @@ export const CaretIcon = ({ variant }: { variant: string }) => {
   );
 };
 
-export const LinkIcon = () => {
+export const LinkIcon = (props: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +70,7 @@ export const LinkIcon = () => {
       height="16"
       viewBox="0 0 16 16"
       fill="none"
+      {...props}
     >
       <path
         fillRule="evenodd"
@@ -222,7 +223,7 @@ export const PlaceholderSearchIcon = () => {
   );
 };
 
-export const UserIdIcon = () => {
+export const UserIdIcon = (props: any) => {
   return (
     <svg
       width="20"
@@ -230,6 +231,7 @@ export const UserIdIcon = () => {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M7.49967 9.16732C8.42015 9.16732 9.16634 8.42113 9.16634 7.50065C9.16634 6.58018 8.42015 5.83398 7.49967 5.83398C6.5792 5.83398 5.83301 6.58018 5.83301 7.50065C5.83301 8.42113 6.5792 9.16732 7.49967 9.16732Z"

@@ -31,11 +31,11 @@ const Button: React.FunctionComponent<ButtonProps> = ({
       aria-label={ariaLabel}
     >
       {prefixIcon && <span>{prefixIcon}</span>}
-      <span className="name">{name}</span>
+      {name}
       {suffixIcon && <span>{suffixIcon}</span>}
       {isLoading && (
         <span>
-          <LoadingOutlined spin />
+          <LoadingOutlined data-testid="loading-icon" spin />
         </span>
       )}
     </button>

@@ -14,18 +14,18 @@ const SearchResultCard: React.FunctionComponent<SearchResultCardProps> = ({
     <div className="resultCard">
       <section className="avatar">
         <img src={data.avatar_url} alt="avatar" />
-        <a href={data.html_url} target="_blank">
+        <a href={data.html_url} target="_blank" data-testid="profile-link">
           <Button
             name="Profile"
             variant="secondary"
-            suffixIcon={<LinkIcon />}
+            suffixIcon={<LinkIcon data-testid="link-icon" />}
           />
         </a>
       </section>
       <p className="name">{data.login}</p>
       <div className="attributeWrapper">
         <span>
-          <UserIdIcon />
+          <UserIdIcon data-testid="userid-icon" />
         </span>
         <span>{data.id}</span>
       </div>
