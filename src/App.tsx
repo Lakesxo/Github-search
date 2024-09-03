@@ -11,35 +11,49 @@ import Button from "./components/button/Button";
 import { useEffect, useState } from "react";
 import SearchResultCard from "./components/search-card/SearchResultCard";
 import background from "./assets/images/lines.png";
+import useSearch from "./hooks/useSearch";
+
+export enum SearchType {
+  Users = "user",
+  Organization = "organization",
+}
 
 export type SearchResponse = {
   id: number;
   avatar_url: string;
   login: string;
   html_url: string;
+  type: SearchType.Users | SearchType.Organization;
 };
 
 const App: React.FunctionComponent = () => {
   const pathname = window.location.pathname;
+  const search = window.location.search;
   const searchParamFromURL = pathname.split("/")[2];
   const searchValueFromURL = pathname.split("/")[3];
+  const pageFromURL = new URLSearchParams(search).get("page") || 1;
+  const limitFromURL = new URLSearchParams(search).get("limit") || 50;
+
   const [searchParameter, setSearchParameter] = useState<
-    "users" | "organization" | string
-  >(searchParamFromURL || "users");
-  const [searchedResults, setSearchedResults] = useState<SearchResponse[]>([]);
+    SearchType.Users | SearchType.Organization | string
+  >(searchParamFromURL || SearchType.Users);
   const [isSearched, setIsSearched] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>(
     searchValueFromURL || ""
   );
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [pageLimit, setPageLimit] = useState<number>(50);
-  const [api, contextHolder] = notification.useNotification();
+  const [page, setPage] = useState<number | string>(pageFromURL);
+  const [pageLimit, setPageLimit] = useState<number | string>(limitFromURL);
+  const [_, contextHolder] = notification.useNotification();
 
   const onRadiochange = (e: RadioChangeEvent) => {
     setSearchParameter(e.target.value);
   };
+  const { data, isLoading, totalPages, triggerFetch } = useSearch(
+    searchValue,
+    searchParameter,
+    page,
+    pageLimit
+  );
 
   const handleSearch = (
     e:
@@ -48,46 +62,24 @@ const App: React.FunctionComponent = () => {
       | React.ChangeEvent<HTMLSelectElement>
       | null,
     search: string,
-    page: number,
-    limit: number
+    page: number | string,
+    limit: number | string
   ) => {
     e?.preventDefault();
     if (searchValue) {
-      const apiUrl = `https://api.github.com/search/users?q=${search}${
-        searchParameter === "organization" ? "+type:org" : ""
-      };page=${page}&amp;per_page=${limit}`;
-      window.history.pushState({}, "", `/search/${searchParameter}/${search}`);
+      triggerFetch();
+      window.history.pushState(
+        {},
+        "",
+        `/search/${searchParameter}/${search}?page=${page}&limit=${limit}`
+      );
       setIsSearched(true);
-      setIsLoading(true);
-      fetch(apiUrl)
-        .then((res) => res.json())
-        .then((data) => {
-          setTotalPages(Math.ceil(data.total_count / limit));
-          data?.items && setSearchedResults(data.items);
-          setIsLoading(false);
-          if (data.message) {
-            api.open({
-              message: "An error occured",
-              description: data.message,
-              type: "error",
-            });
-          }
-        })
-        .catch((err) => {
-          api.open({
-            message: "An error occured",
-            description: err.message,
-            type: "error",
-          });
-          setIsLoading(false);
-          setIsSearched(false);
-        });
     }
   };
 
   useEffect(() => {
     if (searchValueFromURL) {
-      handleSearch(null, searchValueFromURL, 1, pageLimit);
+      handleSearch(null, searchValueFromURL, pageFromURL, pageLimit);
     }
   }, []);
 
@@ -121,7 +113,7 @@ const App: React.FunctionComponent = () => {
         >
           <div className="radiogroup">
             <Radio.Group onChange={onRadiochange} value={searchParameter}>
-              <Radio value="users">Users</Radio>
+              <Radio value="user">Users</Radio>
               <Radio value="organization">Organizations</Radio>
             </Radio.Group>
           </div>
@@ -131,7 +123,7 @@ const App: React.FunctionComponent = () => {
                 aria-label={`search ${searchParameter}`}
                 type="text"
                 placeholder={
-                  searchParameter === "users"
+                  searchParameter === "user"
                     ? "Enter user name"
                     : "Enter organization name"
                 }
@@ -149,7 +141,7 @@ const App: React.FunctionComponent = () => {
               </span>
               <Button
                 name={
-                  searchParameter === "users"
+                  searchParameter === "user"
                     ? "Search Users"
                     : "Search Organization"
                 }
@@ -166,7 +158,7 @@ const App: React.FunctionComponent = () => {
               <Skeleton active paragraph={{ rows: 6 }} />
             ) : (
               <div>
-                {searchedResults.length > 0 ? (
+                {data.length > 0 ? (
                   <div>
                     <section className="pagination">
                       <div className="recordLimit">
@@ -211,12 +203,12 @@ const App: React.FunctionComponent = () => {
                             handleSearch(
                               null,
                               searchValue,
-                              page - 1,
+                              Number(page) - 1,
                               pageLimit
                             );
-                            setPage(page - 1);
+                            setPage(Number(page) - 1);
                           }}
-                          disabled={page === 1 || !searchValue || !totalPages}
+                          disabled={page == 1 || !searchValue || !totalPages}
                         />
                         <Button
                           name={<CaretIcon variant="right" />}
@@ -226,19 +218,19 @@ const App: React.FunctionComponent = () => {
                             handleSearch(
                               null,
                               searchValue,
-                              page + 1,
+                              Number(page) + 1,
                               pageLimit
                             );
-                            setPage(page + 1);
+                            setPage(Number(page) + 1);
                           }}
                           disabled={
-                            page === totalPages || !searchValue || !totalPages
+                            page == totalPages || !searchValue || !totalPages
                           }
                         />
                       </div>
                     </section>
                     <section className="results">
-                      {searchedResults.map((result: SearchResponse) => (
+                      {data.map((result: SearchResponse) => (
                         <SearchResultCard key={result.id} data={result} />
                       ))}
                     </section>

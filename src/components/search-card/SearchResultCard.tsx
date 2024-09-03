@@ -1,5 +1,10 @@
-import { SearchResponse } from "../../App";
-import { LinkIcon, UserIdIcon } from "../../assets/icons";
+import { SearchResponse, SearchType } from "../../App";
+import {
+  LinkIcon,
+  OrganizationIcon,
+  UserIcon,
+  UserIdIcon,
+} from "../../assets/icons";
 import Button from "../button/Button";
 import "./searchResultCard.css";
 
@@ -23,11 +28,22 @@ const SearchResultCard: React.FunctionComponent<SearchResultCardProps> = ({
         </a>
       </section>
       <p className="name">{data.login}</p>
-      <div className="attributeWrapper">
-        <span>
-          <UserIdIcon data-testid="userid-icon" />
-        </span>
-        <span>{data.id}</span>
+      <div className="flex">
+        <div className="attributeWrapper">
+          <span>
+            <UserIdIcon data-testid="userid-icon" />
+          </span>
+          <span>{data.id}</span>
+        </div>
+        <div className="userType">
+          <span>
+            {data.type.toLowerCase() === SearchType.Users ? (
+              <UserIcon />
+            ) : (
+              <OrganizationIcon />
+            )}
+          </span>
+        </div>
       </div>
     </div>
   );

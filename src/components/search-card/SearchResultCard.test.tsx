@@ -2,12 +2,14 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import SearchResultCard from "./SearchResultCard";
 import { buttonTests } from "../button/Button.test";
+import { SearchType } from "../../App";
 
 const mockData = {
   id: 123456,
   login: "testuser",
   avatar_url: "https://example.com/avatar.png",
   html_url: "https://example.com/profile",
+  type: SearchType.Users,
 };
 
 describe("SearchResultCard component", () => {
