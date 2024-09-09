@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { SearchResponse } from "../App";
-import { notification } from "antd";
 
 const useSearch = (
   search: string,
@@ -8,11 +7,11 @@ const useSearch = (
   page: number | string,
   limit: number | string
 ) => {
-  const [api] = notification.useNotification();
   const [data, setData] = useState<SearchResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [shouldFetch, setShouldFetch] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const apiUrl = `https://api.github.com/search/users?q=${search}${
     searchParameter === "organization" ? "+type:org" : "+type:user"
@@ -24,26 +23,24 @@ const useSearch = (
     const fetchData = () => {
       setIsLoading(true);
       fetch(apiUrl)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            setError(`HTTP error! status: ${res.status}`);
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then((data) => {
           setIsLoading(false);
           setShouldFetch(false);
           data?.items && setData(data.items);
           setTotalPages(Math.ceil(data.total_count / Number(limit)));
           if (data.message) {
-            api.open({
-              message: "An error occured",
-              description: data.message,
-              type: "error",
-            });
+            setError(data.message);
           }
         })
         .catch((err) => {
-          api.open({
-            message: "An error occured",
-            description: err.message,
-            type: "error",
-          });
+          setError(err.message);
           setIsLoading(false);
           setShouldFetch(false);
         });
@@ -53,7 +50,11 @@ const useSearch = (
 
   const triggerFetch = () => setShouldFetch(true);
 
-  return { data, isLoading, totalPages, triggerFetch };
+  setTimeout(() => {
+    setError("");
+  }, 1000);
+
+  return { data, isLoading, error, totalPages, triggerFetch };
 };
 
 export default useSearch;

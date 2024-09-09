@@ -43,12 +43,12 @@ const App: React.FunctionComponent = () => {
   );
   const [page, setPage] = useState<number | string>(pageFromURL);
   const [pageLimit, setPageLimit] = useState<number | string>(limitFromURL);
-  const [_, contextHolder] = notification.useNotification();
+  const [api, contextHolder] = notification.useNotification();
 
   const onRadiochange = (e: RadioChangeEvent) => {
     setSearchParameter(e.target.value);
   };
-  const { data, isLoading, totalPages, triggerFetch } = useSearch(
+  const { data, isLoading, error, totalPages, triggerFetch } = useSearch(
     searchValue,
     searchParameter,
     page,
@@ -82,6 +82,14 @@ const App: React.FunctionComponent = () => {
       handleSearch(null, searchValueFromURL, pageFromURL, pageLimit);
     }
   }, []);
+
+  if (error) {
+    api.open({
+      message: "An error occured",
+      description: error,
+      type: "error",
+    });
+  }
 
   return (
     <main>
